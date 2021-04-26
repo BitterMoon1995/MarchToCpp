@@ -3,14 +3,20 @@ using namespace std;
 
 /*
  * 引用变量是一个别名，也就是说，它是某个已存在变量的另一个名字。
- * 引用变量就是它引用的变量【本身】。
  * 一旦把引用初始化为某个变量，就可以使用该引用名称或变量名称来指向变量。
+
+ * 从使用角度上讲，引用变量就是它引用的变量【本身】。
+ *
+ * 本质上，引用的本质是它引用的变量的指针常量（type* const p）。不过编译器在发现这个指针是引用的时候，
+ * 会自动为其解引用，所以引用无需写 * 。
+ * c++推荐引用技术，以简化指针的操作。
  */
 
 TEST(reference,alpha) /* NOLINT */
 {
     int a = 10;
     int& b = a;
+
     cout << b << endl;
     b = 4396;
     cout << a << endl;
@@ -29,7 +35,8 @@ TEST(reference,notice) /* NOLINT */
 
     //引用初始化后，引用对象不可以改变
     int a = 10;
-    int& b = a;
+    int& b = a; //编译器：int* const b = a
+    b++;//编译器：(*b)++，省略了*
     int c = 20;
     b = c;//仅仅是个赋值操作
     cout << a << endl;
@@ -78,3 +85,24 @@ TEST(reference,asReturnValue) /* NOLINT */
     cout << ref << endl;
 }
 
+void showVal(const int& x){
+//    x++;
+    cout << x << endl;
+}
+
+TEST(reference,constReference) /* NOLINT */
+{
+    //引用【并不能】引用全局区-常量区の量
+//    int& x =4396;
+
+    //编译器：int temp = 10;const int* const x = temp
+    const int& x = 43960;
+
+    //不可以通过修改常量引用来修改被引用量的值
+//    x += 7;
+    cout << x << endl;
+
+    //常量引用的主要用途：修饰形参防止误操作
+    int y = 8848;
+    showVal(y);
+}
