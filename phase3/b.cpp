@@ -207,3 +207,54 @@ TEST(ctAndDect,initializedList) /* NOLINT  构造函数的初始化列表*/
     WhiteWoman whiteWoman("lucy",25,6.5);
     cout << whiteWoman << endl;
 }
+
+class Phone{
+    string name;
+    int price;
+
+public:
+    friend ostream &operator<<(ostream &os, const Phone &phone) {
+        os << "name: " << phone.name << " price: " << phone.price;
+        return os;
+    }
+
+    Phone() {};
+
+    Phone(string name, int price) : name(std::move(name)), price(price) {
+        cout << "Phone构造函数调用" << endl;
+    }
+
+    virtual ~Phone() {
+        cout << "Phone析构函数调用" << endl;
+    }
+};
+
+class JK{
+    string name;
+    int age;
+    Phone phone;
+
+public:
+    friend ostream &operator<<(ostream &os, const JK &jk) {
+        os << "name: " << jk.name << " age: " << jk.age << " phone: " << jk.phone;
+        return os;
+    }
+
+    JK(string name, int age, Phone phone) : name(std::move(name)), age(age), phone(std::move(phone)) {
+        cout << "JK构造函数调用" << endl;
+    }
+
+    virtual ~JK() {
+        cout << "JK析构函数调用" << endl;
+    }
+};
+
+/*
+ * 类a作为类B的成员对象时，在构造B时会先调用a的构造，在析构B时会先调用B的析构(与构造相反)
+ */
+TEST(ctAndDect,objectAsMember) /* NOLINT 对象成员：类对象作类的成员*/
+{
+    JK zyw("周雨薇", 13, Phone("iphone 8", 7000));
+    cout << zyw << endl;
+
+}
