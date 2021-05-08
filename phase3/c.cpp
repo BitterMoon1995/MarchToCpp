@@ -71,10 +71,28 @@ public:
     float income;
     static int value;//静态成员变量，属于类，不占实例的内存空间
     //★非静态成员函数，属于类。所有对象共用同一个函数，用this区分
-    Nigga * suicide(){
+    Nigga* suicide(){
         cout << age << "岁nigger正义自杀" << endl;
         return this;
     }
+
+    Nigga& robAndSteal(float money){
+        this->income += money;
+        return *this;
+    }
+
+    void selfIntro(){
+        cout << "我系黑猩猩！" << endl;
+    }
+
+    void show(){
+        if (this == nullptr)
+            return;
+
+        cout << age << endl;
+        cout << income << endl;
+    }
+
     //静态成员函数，属于类
     static void bees2(){
         cout << "nigger死妈了" << endl;
@@ -102,8 +120,61 @@ TEST(objectModel,thisPointer) /* NOLINT */
 
     //通过this->age，让编译器区分同名的成员函数参数与成员变量
     Nigga nigger(22,-200.5f);
-    cout << nigger.age << endl;
-    Nigga* jack = nigger.suicide();
-    cout << jack->income << end;
+//    cout << nigger.age << endl;
+//    Nigga* jack = nigger.suicide();
+//    cout << jack->income << endl;
+
+    nigger.robAndSteal(100).robAndSteal(70.5).robAndSteal(80);
+    cout << nigger.income << endl;
 }
 
+/*
+ *  空指针可以访问成员函数，只要该函数不含或不隐含this（直接写属性名就是隐含）
+ */
+TEST(objectModel,nullWithMemberFunc) /* NOLINT 空指针服务成员函数*/
+{
+    Nigga* p = nullptr;
+//    p->selfIntro();
+    p->show();
+}
+
+class Cat{
+public:
+    float age;
+    mutable int price;
+
+    void noEdit() const{
+//        age++;
+        price += 1000;
+    }
+
+    void meow() {
+        cout << "小坏喵喵喵" << endl;
+    }
+
+    Cat(float age, int price) : age(age), price(price) {}
+};
+
+/*
+ * const修饰的成员函数。
+ * 不可以修改成员变量的值。
+ */
+TEST(objectModel,constMemberFunc) /* NOLINT */
+{
+    Cat OrangeCat(1,500);
+    OrangeCat.noEdit();
+
+}
+/*
+ * const修饰的对象。
+ * 常对象不允许修改任何属性值。
+ * 常对象只能调用常函数，因为普通成员
+ * 函数可以修改成员属性。
+ */
+TEST(objectModel,constObject) /* NOLINT */
+{
+    const Cat doll(0.5,15000);
+//    doll.age = 1;
+    doll.noEdit();
+//    doll.meow();
+}

@@ -68,7 +68,9 @@ int& t2(){
     static int a = 10;
     return a;
 }
-
+/*
+ * 当函数返回一个引用时，则返回一个指向返回值的隐式指针。
+ */
 TEST(reference,asReturnValue) /* NOLINT */
 {
     //不要引用返回的局部变量
