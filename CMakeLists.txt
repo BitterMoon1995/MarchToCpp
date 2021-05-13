@@ -4,7 +4,7 @@ project(Diluc)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Diluc main.cpp phase1/a.cpp phase1/b.cpp phase1/c.cpp phase1/nigga.cpp phase1/nigga.h phase1/d.cpp phase2/a.cpp phase2/b.cpp phase2/c.cpp phase3/a.cpp phase3/b.cpp phase3/c.cpp phase3/d.cpp)
+add_executable(Diluc main.cpp phase1/a.cpp phase1/b.cpp phase1/c.cpp phase1/nigga.cpp phase1/nigga.h phase1/d.cpp phase2/a.cpp phase2/b.cpp phase2/c.cpp phase3/a.cpp phase3/b.cpp phase3/c.cpp phase3/d.cpp phase3/e.cpp)
 
 # gtest配置
 # 编译google test，会在当前目录生成libtest.a静态库
