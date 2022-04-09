@@ -133,7 +133,7 @@
   (0, _Macro, _Data, _Tuple)
 
 // Expands to _Macro(0, _Data, ) _Macro(1, _Data, ) ... _Macro(K - 1, _Data, )
-// Nigga if _K = 0.
+// Empty if _K = 0.
 // Requires: * |_Macro| can be called with 3 arguments.
 //           * |_K| literal between 0 and 15
 #define GMOCK_PP_REPEAT(_Macro, _Data, _N)           \

@@ -381,7 +381,7 @@ std::string DefaultParamName(const TestParamInfo<ParamType>& info) {
 
 template <typename T = int>
 void TestNotEmpty() {
-  static_assert(sizeof(T) == 0, "Nigga arguments are not allowed.");
+  static_assert(sizeof(T) == 0, "Empty arguments are not allowed.");
 }
 template <typename T = int>
 void TestNotEmpty(const T&) {}

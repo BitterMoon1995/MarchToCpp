@@ -2,41 +2,47 @@
 #include <string>
 #include <utility>
 #include <ostream>
+#include <cstring>
 
 using namespace std;
 
-class Person{
-    string name;
-    int age{};
-public:
-    //构造函数可以有参数
-    Person(){
-        cout << "构造函数调用" << endl;
+namespace a2 {
+    class Person {
+        string name;
+        int age{};
+    public:
+        //构造函数可以有参数
+        Person() {
+            cout << "构造函数调用" << endl;
+        };
+
+        Person(string name, int age) : name(std::move(name)), age(age) {
+            cout << "【初始化列表方式】" << endl;
+            cout << "有参（全参）构造调用" << endl;
+        }
+
+        Person(int age) : age(age) {
+            cout << "有参（age）构造调用" << endl;
+        }
+
+        Person(const Person &person) {
+            name = person.name;
+            age = person.age;
+            cout << "拷贝构造函数调用" << endl;
+        }
+
+        //析构函数不能有参数
+        ~Person() {
+            cout << "析构函数调用" << endl;
+        }
+
+        friend ostream& operator<<(ostream &os, const Person &person) {
+            os << "name: " << person.name << " age: " << person.age;
+            return os;
+        }
     };
-
-    Person(const string &name, int age) : name(name), age(age) {
-        cout << "有参（全参）构造调用" << endl;
-    }
-
-    Person(int age) : age(age) {
-        cout << "有参（age）构造调用" << endl;
-    }
-
-    Person(const Person& person){
-        name = person.name;
-        age = person.age;
-        cout << "拷贝构造函数调用" << endl;
-    }
-    //析构函数不能有参数
-    ~Person(){
-        cout << "析构函数调用" << endl;
-    }
-
-    friend ostream &operator<<(ostream &os, const Person &person) {
-        os << "name: " << person.name << " age: " << person.age;
-        return os;
-    }
-};
+}
+using namespace a2;
 
 TEST(ctAndDect,alpha) /* NOLINT   构造函数与析构函数*/
 {
@@ -139,9 +145,9 @@ public:
     int price;
     double* revenue;
 
-    Game(int price2, double revenue2) {
-        price = price2;
-        revenue = new double (revenue2);
+    Game(int price, double revenue) {
+        this->price = price;
+        this->revenue = new double (revenue);
     }
 
     /* 如果类有在堆区开辟的数据，要在析构函数中释放
@@ -186,26 +192,10 @@ TEST(ctAndDect,deepAndShallow) /* NOLINT  深拷贝与浅拷贝*/
     cout << wzry << endl;
 }
 
-class WhiteWoman{
-    string name;
-    int age;
-    float score;
-
-public:
-    WhiteWoman(string name,int age,float score):name(name),age(age),score(score){
-        cout << "爷：初始化列表构造" << endl;
-    }
-
-    friend ostream &operator<<(ostream &os, const WhiteWoman &woman) {
-        os << "name: " << woman.name << " age: " << woman.age << " score: " << woman.score;
-        return os;
-    }
-};
-
 TEST(ctAndDect,initializedList) /* NOLINT  构造函数的初始化列表*/
 {
-    WhiteWoman whiteWoman("lucy",25,6.5);
-    cout << whiteWoman << endl;
+    Person person("尼哥",16);
+    cout << person << endl;
 }
 
 class Phone{
@@ -240,9 +230,7 @@ public:
         return os;
     }
 
-    JK(string name, int age, Phone phone) : name(std::move(name)), age(age), phone(std::move(phone)) {
-        cout << "JK构造函数调用" << endl;
-    }
+    JK(string name, int age, const Phone &phone) : name(std::move(name)), age(age), phone(phone) {}
 
     virtual ~JK() {
         cout << "JK析构函数调用" << endl;
@@ -256,5 +244,4 @@ TEST(ctAndDect,objectAsMember) /* NOLINT 对象成员：类对象作类的成员*/
 {
     JK zyw("周雨薇", 13, Phone("iphone 8", 7000));
     cout << zyw << endl;
-
 }
